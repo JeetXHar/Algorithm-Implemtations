@@ -82,10 +82,8 @@ class B_plus_tree{
         curr->keys[curr->len]=key;
         curr->child[curr->len+1]=child;
         curr->len++;
-        // print(curr);
         if (curr->len>=order){
             if (curr==root){
-                // cout<<"Root splited"<<flush;
                 Node* child2=new Node(order);
                 root=new Node(order);
                 child2->prt=root;
@@ -103,12 +101,10 @@ class B_plus_tree{
                     child2->len++;
                 }
                 for(int i=0;i<child2->len+1;i++) child2->child[i]->prt=child2;
-                // cout<<"child setup complete"<<flush;
                 
                 curr->len=spt;
             }
             else{
-                // cout<<"Internal node split\n"<<flush;
                 Node* node=new Node(order);
                 node->prt=curr->prt;
                 int spt=ceil((curr->len-1)/2.0);
@@ -123,7 +119,6 @@ class B_plus_tree{
                 }
                 curr->len=spt;
                 curr->next=node;
-                // cout<<(curr->prt==root)<<" "<<curr->keys[spt]<<flush;
                 internalInsertion(curr->prt,curr->keys[spt],node);
 
             }
@@ -194,7 +189,6 @@ class B_plus_tree{
     }
 
     void internaldel(int idx,Node* curr,Node* rightnode){
-        // cout<<curr->len<<"\n"<<flush;
         if (curr==root && curr->len==1){
             root=curr->child[0];
             root->prt=nullptr;
@@ -203,10 +197,6 @@ class B_plus_tree{
             delete rightnode;
             return;
         }
-        // cout<<idx<<"\n"<<flush;
-        // print(curr);
-        // print(rightnode);
-        // int idx=lower_bound(all(curr),key)-curr->keys.begin();
         int mxv=curr->keys[curr->len-1];
         for (int i=idx;i<curr->len-1;i++){
             curr->keys[i]=curr->keys[i+1];
@@ -215,12 +205,10 @@ class B_plus_tree{
         curr->len--;
         delete rightnode;
         if (curr->len>=(order-1)/2 || curr==root) return;
-        // print(curr);
         Node* prnt=curr->prt;
         auto itr=lower_bound(all(prnt),curr->keys[curr->len]);
 
         if(itr!=prnt->keys.begin()){
-            // cout<<"Entered\n"<<flush;
             int leftindex=itr-prnt->keys.begin()-1;
             Node* leftnode = prnt->child[leftindex];
             if (leftnode->len>=ceil((order-1)/2)+1){
@@ -239,9 +227,7 @@ class B_plus_tree{
                 return;
             }
         }
-        // cout<<"leftnode skipped\n"<<flush;
         if(itr!=prnt->keys.begin()+prnt->len){
-            // cout<<"Entered\n"<<flush;
             int rightindex=itr-prnt->keys.begin();
             Node* rightnode=prnt->child[rightindex+1];
             if(rightnode->len>=ceil((order-1)/2)+1){
@@ -259,12 +245,9 @@ class B_plus_tree{
                 return;
             }
         }
-        // cout<<"rightnode skipped\n"<<flush;
         if(itr!=prnt->keys.begin()){
             int leftindex=itr-prnt->keys.begin()-1;
-            // cout<<leftindex<<" "<<curr->len<<"\n"<<flush;
             Node* leftnode = prnt->child[leftindex];
-            // print(leftnode);
             
             leftnode->len++;
             leftnode->keys[leftnode->len-1]=prnt->keys[leftindex];
@@ -278,7 +261,6 @@ class B_plus_tree{
                 curr->child[i+1]->prt=leftnode;
             }
             leftnode->next=curr->next;
-            // print(prnt);
             internaldel(leftindex,prnt,curr);
         }
         else if(itr!=prnt->keys.begin()+prnt->len){
@@ -309,7 +291,6 @@ class B_plus_tree{
 
         auto itr=lower_bound(all(pres),n);
         int idx=itr-pres->keys.begin();
-        // cout<<idx<<"\n"<<flush;
         for (int i=idx;i<pres->len-1;i++){
             pres->keys[i]=pres->keys[i+1];
         }
@@ -320,9 +301,7 @@ class B_plus_tree{
         else{
             Node* prnt=pres->prt;
             auto itr=lower_bound(all(prnt),key);
-            // cout<<"Reached\n"<<itr-prnt->keys.begin()<<"\n"<<flush;
             if (itr!=prnt->keys.begin()){
-                // cout<<"Entered\n"<<flush;
                 Node* leftnode=prnt->child[itr-prnt->keys.begin()-1];
                 if (leftnode->len>=ceil((order-1)/2)+1){
                     int key=leftnode->keys[leftnode->len-1];
@@ -335,28 +314,20 @@ class B_plus_tree{
                     return true;
                 }
             }
-            // cout<<"leftnode skipped\n"<<flush;
             if (itr!=prnt->keys.begin()+prnt->len){
-                // cout<<"Entered\n"<<flush;
                 Node* rightnode=prnt->child[itr-prnt->keys.begin()+1];
-                // print(rightnode);
                 if (rightnode->len>=ceil((order-1)/2)+1){
                     int key=rightnode->keys[0];
-                    // cout<<key<<" here"<<rightnode->len<<" "<<pres->len<<" "<<"\n"<<flush;
                     pres->keys[pres->len]=key;
-                    // cout<<pres->keys[pres->len]<<"\n"<<flush;
                     pres->len++;
                     for (int i=0;i<rightnode->len-1;i++){
                         rightnode->keys[i]=rightnode->keys[i+1];
                     }
                     rightnode->len--;
-                    // print(pres);
-                    // print(rightnode);
                     prnt->keys[itr-prnt->keys.begin()]=pres->keys[pres->len-1];
                     return true;
                 }
             }
-            // cout<<"Right skipped\n"<<flush;
             if (itr!=prnt->keys.begin()){
                 Node* leftnode=prnt->child[itr-prnt->keys.begin()-1];
 
@@ -365,8 +336,6 @@ class B_plus_tree{
                     leftnode->len++;
                 }
                 leftnode->next=pres->next;
-                // print(pres);
-                // print(leftnode);
                 internaldel(int(itr-prnt->keys.begin()-1),prnt,pres);
             }
             else if(itr!=prnt->keys.begin()+prnt->len){
