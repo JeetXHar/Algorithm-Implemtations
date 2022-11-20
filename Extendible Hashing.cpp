@@ -4,9 +4,10 @@
 #define all(x)          x.begin(),x.end()
 #define pb              push_back
 #define vi              vector<int>
+#define print(x)        cout<<x<<"\n"<<flush;
 using namespace std;
 
-
+bool f=false;
 
 class extendible_hashing{
     private:
@@ -61,11 +62,11 @@ class extendible_hashing{
             }
         }
         else{
-            int k=ind & (1<<(bkt->localdepth)-1);
+            int k=ind & ((1<<(bkt->localdepth))-1);
             vi indices;
 
             fo(i,0,1<<globaldepth){
-                int last= i& (1<<(bkt->localdepth)-1);
+                int last= i& ((1<<(bkt->localdepth))-1);
                 if (last==k) indices.pb(i);
             }
             
@@ -169,6 +170,23 @@ void start(int bucketsize){
     cout<<"3. Deletion\n";
     cout<<"4. Check for present\n";
     cout<<"5. Exit\n";
+
+    data.insert(23);
+    data.insert(45);
+    data.insert(20);
+    data.insert(11);
+    data.insert(16);
+    data.insert(18);
+    data.insert(24);
+    data.insert(19);
+    data.insert(56);
+    data.insert(57);
+    data.insert(100);
+    data.display();
+    f=true;
+    data.insert(31);
+    data.display();
+
     while (true){
         cout<<"Enter a choice-> ";
         cin>>choice;
